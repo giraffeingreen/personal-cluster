@@ -8,11 +8,24 @@ spec:
     name: discord
   eventSeverity: info
   eventSources:
+    # All supported Flux resources
     - kind: GitRepository
       name: '*'
     - kind: Kustomization
       name: '*'
+    - kind: HelmRelease
+      name: '*'
+    - kind: HelmChart
+      name: '*'
     - kind: HelmRepository
       name: '*'
-    - kind: HelmRelease
+    - kind: Bucket
+      name: '*'
+    - kind: OCIRepository
+      name: '*'
+    - kind: ImageRepository
+      name: '*'
+    - kind: ImagePolicy
+      name: '*'
+    - kind: ImageUpdateAutomation
       name: '*'
