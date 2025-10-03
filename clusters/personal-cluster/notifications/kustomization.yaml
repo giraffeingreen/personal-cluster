@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - discord-provider.yaml
   - flux-alerts.yaml
+  - kubernetes-alerts.yaml
   # - monitoring-alerts.yaml (when monitoring is added)
