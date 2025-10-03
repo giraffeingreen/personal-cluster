@@ -6,4 +6,3 @@ kind: Kustomization
 # the explicit namespaces defined in child manifests (e.g., flux-system).
 resources:
   - ./flux-system
-  - ./secrets
