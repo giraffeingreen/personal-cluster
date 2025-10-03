@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # TODO: Add notification resources here
-  # - discord-secret.enc.yaml
-  # - discord-provider.yaml
-  # - flux-alerts.yaml
+  - discord-provider.yaml
+  - flux-alerts.yaml
   # - monitoring-alerts.yaml (when monitoring is added)
