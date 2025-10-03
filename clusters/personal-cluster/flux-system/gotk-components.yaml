@@ -5345,7 +5345,6 @@ spec:
         - mountPath: /tmp
           name: tmp
       nodeSelector:
-        kubernetes.io/os: linux
         kubernetes.io/hostname: oci
       priorityClassName: system-cluster-critical
       securityContext:
