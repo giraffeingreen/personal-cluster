@@ -5346,6 +5346,7 @@ spec:
           name: tmp
       nodeSelector:
         kubernetes.io/os: linux
+        kubernetes.io/hostname: oci
       priorityClassName: system-cluster-critical
       securityContext:
         fsGroup: 1337
@@ -7241,7 +7242,7 @@ spec:
         - mountPath: /tmp
           name: temp
       nodeSelector:
-        kubernetes.io/os: linux
+        kubernetes.io/hostname: oci
       priorityClassName: system-cluster-critical
       securityContext:
         fsGroup: 1337
@@ -11043,7 +11044,7 @@ spec:
         - mountPath: /tmp
           name: temp
       nodeSelector:
-        kubernetes.io/os: linux
+        kubernetes.io/hostname: oci
       priorityClassName: system-cluster-critical
       securityContext:
         fsGroup: 1337
@@ -13022,7 +13023,7 @@ spec:
         - mountPath: /tmp
           name: temp
       nodeSelector:
-        kubernetes.io/os: linux
+        kubernetes.io/hostname: oci
       securityContext:
         fsGroup: 1337
       serviceAccountName: notification-controller
