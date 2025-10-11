@@ -4,7 +4,7 @@ GitOps repository for managing my personal Kubernetes cluster with Flux.
 
 ## Overview
 
-This repo is structured for Flux v2. The `clusters/personal-cluster` path contains the top-level Flux configuration ("flux-system") that bootstraps and reconciles the rest of the cluster state.
+This repo is structured for Flux. The `clusters/personal-cluster` path contains the top-level Flux configuration ("flux-system") that bootstraps and reconciles the rest of the cluster state.
 
 ## Repo layout
 
