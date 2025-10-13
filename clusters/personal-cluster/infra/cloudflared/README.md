@@ -8,8 +8,8 @@ Cloudflared creates a secure tunnel between your Kubernetes cluster and Cloudfla
 
 ## Components
 
-- **Namespace**: `flux-system` - Uses the existing Flux namespace
-- **Secret**: Encrypted tunnel token stored in `clusters/personal-cluster/secrets/cloudflared-token.yaml`
+- **Namespace**: `cloudflared` - Dedicated namespace for the tunnel
+- **Secret**: Encrypted tunnel token using SOPS + AGE
 - **Deployment**: Single replica deployment running the cloudflared container
 
 ## Configuration
@@ -21,11 +21,11 @@ cloudflared tunnel --no-autoupdate run --token <token>
 
 ### Secret Management
 
-The tunnel token is stored in an encrypted secret using SOPS in the `secrets/` directory:
+The tunnel token is stored in an encrypted secret using SOPS:
 
 **To update the tunnel token:**
 ```bash
-sops clusters/personal-cluster/secrets/cloudflared-token.yaml
+sops clusters/personal-cluster/infra/cloudflared/secret.yaml
 ```
 
 Replace the value of `token` with your Cloudflare tunnel token, then save. SOPS will automatically re-encrypt the file.
