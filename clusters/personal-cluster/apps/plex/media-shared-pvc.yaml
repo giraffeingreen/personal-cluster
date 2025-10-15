@@ -5,7 +5,8 @@ metadata:
   namespace: plex
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+  storageClassName: media-local
   resources:
     requests:
       storage: 500Gi

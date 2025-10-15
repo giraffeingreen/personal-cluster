@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: plex
 resources:
   - namespace.yaml
+  - media-shared-pv.yaml
   - media-shared-pvc.yaml
   # TODO: Add other Plex resources here
   # - deployment.yaml
