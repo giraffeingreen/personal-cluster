@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: cloudflared
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - "10.43.0.10"  # Cluster DNS (CoreDNS) for internal services
+          - "1.1.1.1"     # Cloudflare DNS for external resolution
+          - "1.0.0.1"     # Cloudflare DNS backup
+        options:
+          - name: ndots
+            value: "2"
+          - name: edns0
+        searches:
+          - "cloudflared.svc.cluster.local"
+          - "svc.cluster.local"
+          - "cluster.local"
+      containers:
+      - name: cloudflared
+        image: cloudflare/cloudflared:latest
+        args:
+        - tunnel
+        - --no-autoupdate
+        - run
+        - --token
+        - $(TUNNEL_TOKEN)
+        env:
+        - name: TUNNEL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cloudflared-token
+              key: token
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
