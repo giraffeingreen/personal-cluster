@@ -1,9 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: plex
 resources:
-  # TODO: Add Plex resources here
-  # - namespace.yaml
+  - namespace.yaml
+  - media-shared-pvc.yaml
+  # TODO: Add other Plex resources here
   # - deployment.yaml
   # - service.yaml
   # - ingress.yaml (if needed)
-  # - pvc.yaml (for media storage)
