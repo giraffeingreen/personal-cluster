@@ -1,0 +1,11 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: qbittorrent-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: qbittorrent
+  policy:
+    alphabetical:
+      order: asc

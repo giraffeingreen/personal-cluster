@@ -28,25 +28,26 @@ spec:
           - "cloudflared.svc.cluster.local"
           - "svc.cluster.local"
           - "cluster.local"
+
       containers:
-      - name: cloudflared
-        image: cloudflare/cloudflared:latest
-        args:
-        - tunnel
-        - --no-autoupdate
-        - run
-        - --token
-        - $(TUNNEL_TOKEN)
-        env:
-        - name: TUNNEL_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: cloudflared-token
-              key: token
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "100m"
-          limits:
-            memory: "128Mi"
-            cpu: "200m"
+        - name: cloudflared
+          image: cloudflare/cloudflared:latest # {"$imagepolicy": "flux-system:cloudflared-latest"}
+          args:
+            - tunnel
+            - --no-autoupdate
+            - run
+            - --token
+            - $(TUNNEL_TOKEN)
+          env:
+            - name: TUNNEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflared-token
+                  key: token
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
