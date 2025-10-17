@@ -22,33 +22,33 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: media
       containers:
-      - name: plex
-        image: lscr.io/linuxserver/plex:latest
-        env:
-        - name: PUID
-          value: "1000"
-        - name: PGID
-          value: "1000"
-        - name: TZ
-          value: "Etc/UTC"
-        - name: VERSION
-          value: "docker"
-        volumeMounts:
-        - name: config
-          mountPath: /config
-        - name: media
-          mountPath: /media
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "500m"
-          limits:
-            memory: "4Gi"
-            cpu: "4000m"
+        - name: plex
+          image: lscr.io/linuxserver/plex:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Etc/UTC"
+            - name: VERSION
+              value: "docker"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "4Gi"
+              cpu: "4000m"
       volumes:
-      - name: config
-        persistentVolumeClaim:
-          claimName: plex-config
-      - name: media
-        persistentVolumeClaim:
-          claimName: media-shared
+        - name: config
+          persistentVolumeClaim:
+            claimName: plex-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: media-shared
