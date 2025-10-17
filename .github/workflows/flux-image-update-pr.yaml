@@ -16,35 +16,46 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: flux-image-updates
           fetch-depth: 0
 
+      - name: Check if PR already exists
+        id: check-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_EXISTS=$(gh pr list --head flux-image-updates --base main --json number --jq length)
+          echo "exists=$PR_EXISTS" >> $GITHUB_OUTPUT
+
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: flux-image-updates
-          base: main
-          title: "chore: Update container images"
-          body: |
-            ## Automated Image Updates by FluxCD
-            
-            This PR contains automated updates to container image tags detected by Flux image automation.
-            
-            ### What changed?
-            
-            Flux has detected newer image versions and updated the deployment manifests accordingly.
-            
-            ### Review Checklist
-            - [ ] Review the image tag changes
-            - [ ] Verify the new versions are expected
-            - [ ] Check for any breaking changes in release notes
-            
-            ---
-            
-            🤖 This PR was automatically created by the Flux image automation workflow.
-          labels: |
-            automated
-            flux
-            image-update
-          draft: false
+        if: steps.check-pr.outputs.exists == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base main \
+            --head flux-image-updates \
+            --title "chore: Update container images" \
+            --body "## Automated Image Updates by FluxCD
+
+          This PR contains automated updates to container image tags detected by Flux image automation.
+
+          ### What changed?
+
+          Flux has detected newer image versions and updated the deployment manifests accordingly.
+
+          ### Review Checklist
+          - [ ] Review the image tag changes
+          - [ ] Verify the new versions are expected
+          - [ ] Check for any breaking changes in release notes
+
+          ---
+
+          🤖 This PR was automatically created by the Flux image automation workflow." \
+            --label automated,flux,image-update
+
+      - name: Update existing PR
+        if: steps.check-pr.outputs.exists != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "PR already exists, skipping creation"
