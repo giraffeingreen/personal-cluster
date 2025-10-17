@@ -23,7 +23,7 @@ spec:
         kubernetes.io/hostname: media
       containers:
         - name: plex
-          image: lscr.io/linuxserver/plex:latest # {"$imagepolicy": "flux-system:plex-latest"}
+          image: lscr.io/linuxserver/plex:version-1.42.2.10156-f737b826c # {"$imagepolicy": "flux-system:plex-latest"}
           env:
             - name: PUID
               value: "1000"

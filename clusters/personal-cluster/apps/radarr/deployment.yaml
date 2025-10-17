@@ -19,10 +19,9 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: media
-
       containers:
         - name: radarr
-          image: lscr.io/linuxserver/radarr:latest # {"$imagepolicy": "flux-system:radarr-latest"}
+          image: lscr.io/linuxserver/radarr:version-v0.2.0.1504 # {"$imagepolicy": "flux-system:radarr-latest"}
           ports:
             - containerPort: 7878
               name: http
