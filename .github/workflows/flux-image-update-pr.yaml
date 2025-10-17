@@ -1,0 +1,50 @@
+name: Create PR for Flux Image Updates
+
+on:
+  push:
+    branches:
+      - flux-image-updates
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: flux-image-updates
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: flux-image-updates
+          base: main
+          title: "chore: Update container images"
+          body: |
+            ## Automated Image Updates by FluxCD
+            
+            This PR contains automated updates to container image tags detected by Flux image automation.
+            
+            ### What changed?
+            
+            Flux has detected newer image versions and updated the deployment manifests accordingly.
+            
+            ### Review Checklist
+            - [ ] Review the image tag changes
+            - [ ] Verify the new versions are expected
+            - [ ] Check for any breaking changes in release notes
+            
+            ---
+            
+            🤖 This PR was automatically created by the Flux image automation workflow.
+          labels: |
+            automated
+            flux
+            image-update
+          draft: false
