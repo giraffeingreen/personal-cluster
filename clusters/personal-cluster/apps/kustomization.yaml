@@ -5,4 +5,5 @@ resources:
   - ./plex  # Contains the plex namespace
   - ./sonarr
   - ./radarr
+  - ./qbittorrent
   # - ./windmill
