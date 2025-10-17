@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - imagerepository-plex.yaml
+  - imagerepository-sonarr.yaml
+  - imagerepository-radarr.yaml
+  - imagerepository-qbittorrent.yaml
+  - imagerepository-cloudflared.yaml
+  - imagepolicy-plex.yaml
+  - imagepolicy-sonarr.yaml
+  - imagepolicy-radarr.yaml
+  - imagepolicy-qbittorrent.yaml
+  - imagepolicy-cloudflared.yaml
+  - imageupdateautomation.yaml

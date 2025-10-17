@@ -7,7 +7,7 @@ spec:
   interval: 5m
   sourceRef:
     kind: GitRepository
-    name: image-automation
+    name: flux-system
   git:
     checkout:
       ref:
@@ -19,3 +19,6 @@ spec:
       messageTemplate: "Update images to latest"
     push:
       branch: main
+  update:
+    path: ./clusters/personal-cluster
+    strategy: Setters

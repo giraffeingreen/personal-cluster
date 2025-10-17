@@ -10,3 +10,4 @@ resources:
   - ./notifications
   - ./infra
   - ./apps
+  - ./image-automation
