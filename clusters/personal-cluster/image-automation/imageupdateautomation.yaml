@@ -14,11 +14,26 @@ spec:
         branch: main
     commit:
       author:
-        email: fluxcdbot@example.com
+        email: vio@giraffeingreen.fyi
         name: FluxCD Bot
-      messageTemplate: "Update images to latest"
+      messageTemplate: |
+        Update images to latest
+
+        Automated image update by Flux
     push:
-      branch: main
+      branch: flux-image-updates
+      options:
+        force: true
+    pullRequest:
+      create: true
+      title: "chore: Update container images"
+      description: |
+        Automated pull request to update container images to their latest versions.
+
+        Updated images:
+        {{range .Updated.Images -}}
+        - {{.}} ({{.Policy.Name}})
+        {{end}}
   update:
     path: ./clusters/personal-cluster
     strategy: Setters
