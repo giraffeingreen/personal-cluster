@@ -21,7 +21,7 @@ spec:
         kubernetes.io/hostname: media
       containers:
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:version-release-4.4.1 # {"$imagepolicy": "flux-system:qbittorrent-latest"}
+          image: lscr.io/linuxserver/qbittorrent:latest@sha256:884b9b6e9c6467d9c1fb16551e03cb1f66ad32c412ce4bb492e206e0bd0f55b5 # {"$imagepolicy": "flux-system:qbittorrent-latest"}
           ports:
             - containerPort: 8080
               name: webui
