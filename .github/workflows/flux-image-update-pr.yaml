@@ -23,19 +23,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_EXISTS=$(gh pr list --head flux-image-updates --base main --json number --jq length)
-          echo "exists=$PR_EXISTS" >> $GITHUB_OUTPUT
+          PR_NUMBER=$(gh pr list --head flux-image-updates --base main --json number --jq '.[0].number // 0')
+          echo "number=$PR_NUMBER" >> $GITHUB_OUTPUT
 
-      - name: Create Pull Request
-        if: steps.check-pr.outputs.exists == '0'
+      - name: Create or Update Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.check-pr.outputs.number }}
         run: |
-          gh pr create \
-            --base main \
-            --head flux-image-updates \
-            --title "chore: Update container images" \
-            --body "## Automated Image Updates by FluxCD
+          PR_BODY="## Automated Image Updates by FluxCD
 
           This PR contains automated updates to container image tags detected by Flux image automation.
 
@@ -50,12 +46,18 @@ jobs:
 
           ---
 
-          🤖 This PR was automatically created by the Flux image automation workflow." \
-            --label automated,flux,image-update
+          🤖 This PR was automatically created by the Flux image automation workflow.
+          Last updated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
-      - name: Update existing PR
-        if: steps.check-pr.outputs.exists != '0'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "PR already exists, skipping creation"
+          if [ "$PR_NUMBER" = "0" ]; then
+            echo "Creating new PR..."
+            gh pr create \
+              --base main \
+              --head flux-image-updates \
+              --title "chore: Update container images" \
+              --body "$PR_BODY" || echo "PR creation failed or already exists"
+          else
+            echo "PR #$PR_NUMBER already exists, updating..."
+            gh pr edit "$PR_NUMBER" \
+              --body "$PR_BODY" || echo "PR update failed"
+          fi
