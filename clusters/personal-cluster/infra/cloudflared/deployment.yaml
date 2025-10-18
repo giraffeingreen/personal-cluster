@@ -29,7 +29,7 @@ spec:
           - "cluster.local"
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:latest-arm64 # {"$imagepolicy": "flux-system:cloudflared-latest"}
+          image: cloudflare/cloudflared:latest # {"$imagepolicy": "flux-system:cloudflared-latest"}
           args:
             - tunnel
             - --no-autoupdate
