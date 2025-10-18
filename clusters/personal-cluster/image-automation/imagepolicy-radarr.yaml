@@ -7,6 +7,7 @@ spec:
   imageRepositoryRef:
     name: radarr
   filterTags:
-    pattern: "^latest$"
+    pattern: '^latest$'
   policy:
-    alphabetical: {}
+    alphabetical:
+      order: asc

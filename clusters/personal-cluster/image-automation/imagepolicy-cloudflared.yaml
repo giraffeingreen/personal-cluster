@@ -9,4 +9,5 @@ spec:
   filterTags:
     pattern: "^latest$"
   policy:
-    alphabetical: {}
+    alphabetical:
+      order: asc
