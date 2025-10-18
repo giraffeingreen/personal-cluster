@@ -7,6 +7,6 @@ spec:
   imageRepositoryRef:
     name: plex
   filterTags:
-    pattern: '^latest$'
+    pattern: "^latest$"
   policy:
     alphabetical: {}
