@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   image: lscr.io/linuxserver/qbittorrent
-  interval: 30m
+  interval: 24h
