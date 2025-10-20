@@ -9,4 +9,4 @@ spec:
   storageClassName: media-local
   resources:
     requests:
-      storage: 500Gi
+      storage: 916Gi

@@ -4,7 +4,7 @@ metadata:
   name: media-shared-pv
 spec:
   capacity:
-    storage: 500Gi
+    storage: 916Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
@@ -13,11 +13,11 @@ spec:
   nodeAffinity:
     required:
       nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - media
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - media
   hostPath:
-    path: /mnt/media-shared
-    type: DirectoryOrCreate
+    path: /mnt/hdd
+    type: Directory
