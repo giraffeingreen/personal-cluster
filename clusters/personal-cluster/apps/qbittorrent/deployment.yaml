@@ -37,7 +37,7 @@ spec:
             - name: PGID
               value: "1000"
             - name: TZ
-              value: "Etc/UTC"
+              value: "Europe/Bucharest"
             - name: WEBUI_PORT
               value: "8080"
             - name: TORRENTING_PORT
