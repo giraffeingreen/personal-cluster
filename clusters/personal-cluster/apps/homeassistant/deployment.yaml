@@ -26,6 +26,9 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
+            - name: ha-configuration
+              mountPath: /config/configuration.yaml
+              subPath: configuration.yaml
             - mountPath: /etc/localtime
               name: localtime
               readOnly: true
@@ -36,6 +39,9 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: homeassistant-config
+        - name: ha-configuration
+          configMap:
+            name: homeassistant-configuration
         - name: localtime
           hostPath:
             path: /etc/localtime
