@@ -1,0 +1,15 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: timescaledb-latest
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: timescaledb
+  interval: 30m
+  filterTags:
+    pattern: "^latest-pg17$"
+  policy:
+    alphabetical:
+      order: asc
+  digestReflectionPolicy: Always

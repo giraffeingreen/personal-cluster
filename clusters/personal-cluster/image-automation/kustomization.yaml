@@ -6,9 +6,11 @@ resources:
   - imagerepository-radarr.yaml
   - imagerepository-qbittorrent.yaml
   - imagerepository-cloudflared.yaml
+  - imagerepository-timescaledb.yaml
   - imagepolicy-plex.yaml
   - imagepolicy-sonarr.yaml
   - imagepolicy-radarr.yaml
   - imagepolicy-qbittorrent.yaml
   - imagepolicy-cloudflared.yaml
+  - imagepolicy-timescaledb.yaml
   - imageupdateautomation.yaml
