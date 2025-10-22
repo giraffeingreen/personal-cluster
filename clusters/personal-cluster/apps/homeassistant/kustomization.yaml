@@ -6,4 +6,4 @@ resources:
   - config-pvc.yaml
   - deployment.yaml
   - service.yaml
-  - configmap-configuration.yaml
+  # configmap-configuration.yaml removed: configuration is provided via PVC `homeassistant-config`
