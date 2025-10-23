@@ -6,5 +6,7 @@ resources:
   - pvc.yaml
   - timescale-secret.yaml
   - deployment-server.yaml
-  - deployment-worker.yaml
+  - deployment-worker-default.yaml
+  - deployment-worker-native.yaml
+  - deployment-worker-reports.yaml
   - service.yaml

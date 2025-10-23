@@ -1,28 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: windmill-server
+  name: windmill-worker-native
   namespace: windmill
   labels:
-    app: windmill-server
+    app: windmill-worker-native
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: windmill-server
+      app: windmill-worker-native
   template:
     metadata:
       labels:
-        app: windmill-server
+        app: windmill-worker-native
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: oci
       containers:
-        - name: windmill-server
+        - name: windmill-worker
           image: windmill/windmill:main # {"$imagepolicy": "flux-system:windmill-main"}
           env:
             - name: MODE
-              value: server
+              value: worker
+            - name: WORKER_GROUP
+              value: native
+            - name: NUM_WORKERS
+              value: "8"
+            - name: SLEEP_QUEUE
+              value: "200"
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -44,13 +48,22 @@ spec:
               value: "5432"
             - name: DATABASE_URL
               value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)
-          ports:
-            - containerPort: 8000
-            - containerPort: 2525
+          volumeMounts:
+            - mountPath: /tmp/windmill/cache
+              name: worker-cache
+            - mountPath: /tmp/windmill/logs
+              name: worker-logs
           resources:
+            limits:
+              memory: "2048Mi"
+              cpu: "1000m"
             requests:
               memory: "512Mi"
               cpu: "250m"
-            limits:
-              memory: "1Gi"
-              cpu: "500m"
+      volumes:
+        - name: worker-cache
+          persistentVolumeClaim:
+            claimName: windmill-worker-cache
+        - name: worker-logs
+          persistentVolumeClaim:
+            claimName: windmill-worker-logs
