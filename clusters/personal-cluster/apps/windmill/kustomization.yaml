@@ -1,11 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: windmill
 resources:
-  # TODO: Add Windmill resources here
-  # - namespace.yaml
-  # - deployment.yaml (windmill-server)
-  # - deployment.yaml (windmill-worker)  
-  # - service.yaml
-  # - ingress.yaml
-  # - postgres.yaml (database)
-  # - configmap.yaml
+  - namespace.yaml
+  - pvc.yaml
+  - timescale-secret.yaml
+  - deployment-server.yaml
+  - deployment-worker.yaml
+  - service.yaml
