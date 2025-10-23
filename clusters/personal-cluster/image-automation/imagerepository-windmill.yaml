@@ -4,5 +4,5 @@ metadata:
   name: windmill
   namespace: flux-system
 spec:
-  image: windmill/windmill
+  image: ghcr.io/windmill-labs/windmill
   interval: 24h
