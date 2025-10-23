@@ -6,7 +6,7 @@ metadata:
   labels:
     app: windmill-worker-default
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: windmill-worker-default
