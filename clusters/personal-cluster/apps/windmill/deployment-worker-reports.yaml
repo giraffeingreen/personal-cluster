@@ -15,8 +15,6 @@ spec:
       labels:
         app: windmill-worker-reports
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: oci
       containers:
         - name: windmill-worker
           image: ghcr.io/windmill-labs/windmill:main@sha256:18682ffaf826eae47465e33a29acd14ce9bf7959eeca2e36277c0dac3b9c9881 # {"$imagepolicy": "flux-system:windmill-main"}
@@ -65,8 +63,6 @@ spec:
           hostPath:
             path: /var/run/docker.sock
         - name: worker-cache
-          persistentVolumeClaim:
-            claimName: windmill-worker-cache
+          emptyDir: {}
         - name: worker-logs
-          persistentVolumeClaim:
-            claimName: windmill-worker-logs
+          emptyDir: {}

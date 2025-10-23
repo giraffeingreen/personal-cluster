@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: windmill
 resources:
   - namespace.yaml
-  - pvc.yaml
   - timescale-secret.yaml
   - deployment-server.yaml
   - deployment-worker-default.yaml

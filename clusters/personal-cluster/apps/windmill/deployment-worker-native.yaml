@@ -15,8 +15,6 @@ spec:
       labels:
         app: windmill-worker-native
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: oci
       containers:
         - name: windmill-worker
           image: ghcr.io/windmill-labs/windmill:main # {"$imagepolicy": "flux-system:windmill-main"} # {"$imagepolicy": "flux-system:windmill-main"}
@@ -64,8 +62,6 @@ spec:
               cpu: "250m"
       volumes:
         - name: worker-cache
-          persistentVolumeClaim:
-            claimName: windmill-worker-cache
+          emptyDir: {}
         - name: worker-logs
-          persistentVolumeClaim:
-            claimName: windmill-worker-logs
+          emptyDir: {}
