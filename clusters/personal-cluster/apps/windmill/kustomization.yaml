@@ -9,4 +9,7 @@ resources:
   - deployment-worker-default.yaml
   - deployment-worker-native.yaml
   - deployment-worker-reports.yaml
+  - hpa-worker-default.yaml
+  - hpa-worker-native.yaml
+  - hpa-worker-reports.yaml
   - service.yaml
