@@ -19,7 +19,7 @@ spec:
         kubernetes.io/hostname: oci
       containers:
         - name: windmill-server
-          image: ghcr.io/windmill-labs/windmill:main@sha256:9f38d46a9af72d19d78858458780445fd288617fb671da2512569b7c75c22c17 # {"$imagepolicy": "flux-system:windmill-main"}
+          image: ghcr.io/windmill-labs/windmill:main@sha256:f333d7d0a93b4990e29e013a372953910cbf4b16bd9e939b8afd0ca118976630 # {"$imagepolicy": "flux-system:windmill-main"}
           env:
             - name: MODE
               value: server
