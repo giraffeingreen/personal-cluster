@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   image: lscr.io/linuxserver/sonarr
-  interval: 24h
+  interval: 168h

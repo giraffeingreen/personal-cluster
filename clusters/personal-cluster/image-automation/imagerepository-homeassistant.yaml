@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   image: ghcr.io/home-assistant/home-assistant
-  interval: 24h
+  interval: 168h

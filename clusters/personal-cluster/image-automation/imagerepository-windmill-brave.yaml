@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   image: windmill-brave
-  interval: 24h
+  interval: 168h
