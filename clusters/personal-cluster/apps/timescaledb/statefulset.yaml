@@ -44,11 +44,11 @@ spec:
               name: timescale-storage
           resources:
             requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
               memory: "8Gi"
               cpu: "2000m"
+            limits:
+              memory: "16Gi"
+              cpu: "4000m"
   volumeClaimTemplates:
     - metadata:
         name: timescale-storage
