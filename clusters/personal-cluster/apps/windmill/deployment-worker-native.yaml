@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: windmill-worker
-          image: ghcr.io/windmill-labs/windmill:main@sha256:c5483003290271418bed5441cc9495617c53e128b76efcbbe7acacbe2708d131 # {"$imagepolicy": "flux-system:windmill-main"}
+          image: ghcr.io/windmill-labs/windmill:main@sha256:1f543460da7975efe8d316c6b163a4a82f9de5f07e047351d703d63f616e5619 # {"$imagepolicy": "flux-system:windmill-main"}
           env:
             - name: MODE
               value: worker
