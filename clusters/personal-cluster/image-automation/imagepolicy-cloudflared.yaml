@@ -6,7 +6,7 @@ metadata:
 spec:
   imageRepositoryRef:
     name: cloudflared
-  interval: 30m
+  interval: 168h
   filterTags:
     pattern: "^latest$"
   policy:

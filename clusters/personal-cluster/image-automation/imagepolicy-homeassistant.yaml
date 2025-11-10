@@ -6,7 +6,7 @@ metadata:
 spec:
   imageRepositoryRef:
     name: homeassistant
-  interval: 30m
+  interval: 168h
   filterTags:
     pattern: "^stable$"
   policy:
