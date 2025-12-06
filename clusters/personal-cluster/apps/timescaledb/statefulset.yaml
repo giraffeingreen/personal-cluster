@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: media
       containers:
         - name: timescaledb
-          image: timescale/timescaledb:latest-pg17@sha256:a6581100f2f1cd1e03a29a94a49c488a174de65e57301c04de255804645e5a31 # {"$imagepolicy": "flux-system:timescaledb-latest"}
+          image: timescale/timescaledb:latest-pg17@sha256:e953289fe276c1b0e3867af65f03af4b677072e96a507a3e5b852b64d3be91d4 # {"$imagepolicy": "flux-system:timescaledb-latest"}
           env:
             - name: POSTGRES_USER
               valueFrom:
