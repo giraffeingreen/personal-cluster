@@ -19,7 +19,7 @@ spec:
         kubernetes.io/hostname: media
       containers:
         - name: windmill-server
-          image: ghcr.io/windmill-labs/windmill:main@sha256:12c3fac5d53c58f8df713a159d847bb13a7a276e88c628c482016535d9335c9d # {"$imagepolicy": "flux-system:windmill-main"}
+          image: ghcr.io/windmill-labs/windmill:main@sha256:39c9008e383e086c79b3bb163ca228a221b237c505dbccc8b279d4416cd0c475 # {"$imagepolicy": "flux-system:windmill-main"}
           env:
             - name: MODE
               value: server
