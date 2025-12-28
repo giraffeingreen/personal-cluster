@@ -13,20 +13,8 @@ spec:
       labels:
         app: cloudflared
     spec:
-      dnsPolicy: "None"
-      dnsConfig:
-        nameservers:
-          - "10.43.0.10" # Cluster DNS (CoreDNS) for internal services
-          - "1.1.1.1" # Cloudflare DNS for external resolution
-          - "1.0.0.1" # Cloudflare DNS backup
-        options:
-          - name: ndots
-            value: "2"
-          - name: edns0
-        searches:
-          - "cloudflared.svc.cluster.local"
-          - "svc.cluster.local"
-          - "cluster.local"
+      nodeSelector:
+        kubernetes.io/hostname: media
       containers:
         - name: cloudflared
           image: cloudflare/cloudflared:latest@sha256:89ee50efb1e9cb2ae30281a8a404fed95eb8f02f0a972617526f8c5b417acae2 # {"$imagepolicy": "flux-system:cloudflared-latest"}
