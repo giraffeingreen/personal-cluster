@@ -12,6 +12,7 @@ spec:
       privateInterface: tailscale0
       role: controller+worker
       hostname: oci
+      noTaints: true
     - ssh:
         address: media
         user: home
@@ -20,6 +21,54 @@ spec:
       privateInterface: tailscale0
       role: worker
       hostname: media
+    - ssh:
+        address: nanocluster1
+        user: sipeed
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: worker
+      hostname: nanocluster-1
+    - ssh:
+        address: nanocluster2
+        user: sipeed
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: worker
+      hostname: nanocluster-2
+    - ssh:
+        address: nanocluster3
+        user: sipeed
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: worker
+      hostname: nanocluster-3
+    - ssh:
+        address: nanocluster4
+        user: sipeed
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: worker
+      hostname: nanocluster-4
+    - ssh:
+        address: nanocluster5
+        user: sipeed
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: worker
+      hostname: nanocluster-5
+    - ssh:
+        address: nanocluster6
+        user: sipeed
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: worker
+      hostname: nanocluster-6
   k0s:
     config:
       spec:
