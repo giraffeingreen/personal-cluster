@@ -1,0 +1,33 @@
+apiVersion: k0sctl.k0sproject.io/v1beta1
+kind: Cluster
+metadata:
+  name: personal-cluster
+spec:
+  hosts:
+    - ssh:
+        address: oci
+        user: ubuntu
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: controller+worker
+      hostname: oci
+    - ssh:
+        address: media
+        user: home
+        port: 22
+        keyPath: ~/.ssh/id_rsa
+      privateInterface: tailscale0
+      role: worker
+      hostname: media
+  k0s:
+    config:
+      spec:
+        api:
+          address: 100.70.234.18
+        network:
+          provider: calico
+          calico:
+            envVars:
+              FELIX_IPTABLESMARKMASK: "0xff00ff00"
+              IP_AUTODETECTION_METHOD: "interface=tailscale0"
