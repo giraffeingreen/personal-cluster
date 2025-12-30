@@ -80,3 +80,19 @@ spec:
             envVars:
               FELIX_IPTABLESMARKMASK: "0xff00ff00"
               IP_AUTODETECTION_METHOD: "interface=tailscale0"
+        extensions:
+          helm:
+            repositories:
+              - name: openebs-internal
+                url: https://openebs.github.io/charts
+            charts:
+              - name: openebs
+                chartname: openebs-internal/openebs
+                version: "3.9.0"
+                namespace: openebs
+                order: 1
+                values: |
+                  localprovisioner:
+                    hostpathClass:
+                      enabled: true
+                      isDefaultClass: true
