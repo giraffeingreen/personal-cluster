@@ -15,6 +15,29 @@ spec:
       labels:
         app: windmill-worker-default
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - oci
+                      - nanocluster-1
+                      - nanocluster-2
+                      - nanocluster-3
+                      - nanocluster-4
+                      - nanocluster-5
+                      - nanocluster-6
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - media
       containers:
         - name: windmill-worker
           image: ghcr.io/windmill-labs/windmill:main@sha256:9dc255d43d2de81182dba2a2b6bbcfb9568ff51fa5c34003c5e13f843ef35dcf # {"$imagepolicy": "flux-system:windmill-main"}
