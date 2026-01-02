@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: homeassistant-config
-  namespace: homeassistant
+  name: timescale-storage-timescaledb-0
+  namespace: timescale
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: openebs-hostpath
-  volumeName: homeassistant-config-pv
+  volumeName: timescaledb-data-pv
   resources:
     requests:
-      storage: 10Gi
+      storage: 1Ti

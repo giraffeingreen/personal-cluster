@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: timescale
 resources:
   - namespace.yaml
+  - storage-pvc.yaml
   - statefulset.yaml
   - service.yaml

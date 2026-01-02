@@ -6,6 +6,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: openebs-hostpath
+  volumeName: sonarr-config-pv
   resources:
     requests:
       storage: 5Gi
