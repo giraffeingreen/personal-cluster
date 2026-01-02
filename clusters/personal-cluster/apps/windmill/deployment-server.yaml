@@ -16,7 +16,7 @@ spec:
         app: windmill-server
     spec:
       nodeSelector:
-        kubernetes.io/hostname: media
+        kubernetes.io/hostname: oci
       containers:
         - name: windmill-server
           image: ghcr.io/windmill-labs/windmill:main@sha256:9dc255d43d2de81182dba2a2b6bbcfb9568ff51fa5c34003c5e13f843ef35dcf # {"$imagepolicy": "flux-system:windmill-main"}
