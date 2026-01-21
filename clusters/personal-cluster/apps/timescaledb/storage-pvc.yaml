@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: timescale-storage-timescaledb-0
+  name: timescale-storage
   namespace: timescale
 spec:
   accessModes:

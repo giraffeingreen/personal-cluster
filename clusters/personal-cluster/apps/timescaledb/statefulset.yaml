@@ -49,12 +49,7 @@ spec:
             limits:
               memory: "16Gi"
               cpu: "4000m"
-  volumeClaimTemplates:
-    - metadata:
-        name: timescale-storage
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Ti
+      volumes:
+        - name: timescale-storage
+          persistentVolumeClaim:
+            claimName: timescale-storage
