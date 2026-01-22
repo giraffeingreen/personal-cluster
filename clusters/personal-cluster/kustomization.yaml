@@ -11,4 +11,3 @@ resources:
   - ./infra
   - ./apps
   - ./image-automation
-  - ./monitoring
