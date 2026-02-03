@@ -8,8 +8,6 @@ resources:
   - imagerepository-cloudflared.yaml
   - imagerepository-timescaledb.yaml
   - imagerepository-homeassistant.yaml
-  - imagerepository-windmill.yaml
-  #- imagerepository-windmill-brave.yaml
   - imagepolicy-plex.yaml
   - imagepolicy-sonarr.yaml
   - imagepolicy-radarr.yaml
@@ -17,6 +15,4 @@ resources:
   - imagepolicy-cloudflared.yaml
   - imagepolicy-timescaledb.yaml
   - imagepolicy-homeassistant.yaml
-  - imagepolicy-windmill.yaml
-  #- imagepolicy-windmill-brave.yaml
   - imageupdateautomation.yaml
