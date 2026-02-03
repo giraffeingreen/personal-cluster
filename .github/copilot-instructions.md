@@ -21,7 +21,7 @@ This is a GitOps repository for managing a personal Kubernetes cluster using Flu
   - `flux-alerts.yaml` - Alert rules for Flux system and application events
 - `clusters/personal-cluster/secrets/` - Encrypted secrets (SOPS encrypted)
   - `discord-webhook.yaml` - Encrypted Discord webhook URL
-- `clusters/personal-cluster/apps/` - Application deployments (Plex, Windmill, etc.)
+- `clusters/personal-cluster/apps/` - Application deployments (Plex, Sonarr, Radarr, qBittorrent, etc.)
 - `.sops/age.pub` - AGE public key for SOPS encryption
 
 ## Developer Workflows
