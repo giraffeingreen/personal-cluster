@@ -7,4 +7,3 @@ resources:
   - ./qbittorrent
   - ./timescaledb
   - ./homeassistant
-  - ./windmill
