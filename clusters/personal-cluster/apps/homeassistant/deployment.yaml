@@ -20,7 +20,7 @@ spec:
       hostNetwork: true
       containers:
         - name: homeassistant
-          image: ghcr.io/home-assistant/home-assistant:stable@sha256:c36741490472518338323db8ee67775d7df70d2fa1f68eff9b9e63679fe64a18 # {"$imagepolicy": "flux-system:homeassistant-latest"}
+          image: ghcr.io/home-assistant/home-assistant:stable@sha256:17441c45ba14560b4ef727ee06aac4d605cf0dc0625fc4f2e043cb2551d72749 # {"$imagepolicy": "flux-system:homeassistant-latest"}
           securityContext:
             privileged: true
           volumeMounts:
