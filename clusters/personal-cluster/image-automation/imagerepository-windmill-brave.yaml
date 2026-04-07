@@ -1,8 +1,0 @@
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImageRepository
-metadata:
-  name: windmill-brave
-  namespace: flux-system
-spec:
-  image: windmill-brave
-  interval: 168h

@@ -9,7 +9,7 @@ This repo is structured for Flux. The `clusters/personal-cluster` path contains 
 ## Repo layout
 
 - `clusters/personal-cluster/flux-system/` — Flux installation and top-level Kustomizations/Sources for this cluster
-- `clusters/personal-cluster/apps/` — Application deployments (Plex, Windmill, etc.)
+- `clusters/personal-cluster/apps/` — Application deployments (Plex, Sonarr, Radarr, qBittorrent, etc.)
 - `clusters/personal-cluster/notifications/` — Flux notification providers and alerts (Discord integration)
 - `clusters/personal-cluster/secrets/` — Encrypted secrets (Discord webhooks, app configs)
 - `clusters/personal-cluster/monitoring/` — Monitoring stack (planned)
