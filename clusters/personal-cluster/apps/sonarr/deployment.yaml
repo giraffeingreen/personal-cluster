@@ -21,7 +21,7 @@ spec:
         kubernetes.io/hostname: media
       containers:
         - name: sonarr
-          image: lscr.io/linuxserver/sonarr:latest@sha256:02b4d538d351d6e35882a021c08e8600fe95d28860fb1dd724b597166e7221ca # {"$imagepolicy": "flux-system:sonarr-latest"}
+          image: lscr.io/linuxserver/sonarr:latest@sha256:76414c033f290d3c9f1f9dfad71150abe71d92592369a3377a5903d579e6e2b2 # {"$imagepolicy": "flux-system:sonarr-latest"}
           ports:
             - containerPort: 8989
               name: http
