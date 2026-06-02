@@ -14,14 +14,6 @@ spec:
       hostname: oci
       noTaints: true
     - ssh:
-        address: oci-us
-        user: ubuntu
-        port: 22
-        keyPath: ~/.ssh/id_rsa
-      privateInterface: tailscale0
-      role: worker
-      hostname: oci-us
-    - ssh:
         address: media
         user: home
         port: 22
