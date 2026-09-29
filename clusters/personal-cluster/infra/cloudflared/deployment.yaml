@@ -17,7 +17,7 @@ spec:
         kubernetes.io/hostname: media
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:latest@sha256:51c9cefcb4569df44e1ad403ab1d3d8065aa8e84339bcfc6aee75502e1140339 # {"$imagepolicy": "flux-system:cloudflared-latest"}
+          image: cloudflare/cloudflared:latest@sha256:072c067d25ccbe61d46e18f0d0723255f2bb5304f7317caa95b27031520ff92c # {"$imagepolicy": "flux-system:cloudflared-latest"}
           args:
             - tunnel
             - --no-autoupdate
