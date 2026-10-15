@@ -61,11 +61,14 @@ The Kubernetes executor runs each job as a pod. The runner lives in its own name
 **Registered at the group level with a runner authentication token.**
 Register the runner to the `goldencanopy` group (not a single project), so future projects can use it. GitLab's current model issues a runner **authentication token** (`glrt-...`) at registration, stored in a SOPS-encrypted Secret and consumed via `runners.secret` in the chart values. A project-scoped runner was rejected only because a group runner covers the same need and reuses better later.
 
+**Helm charts track the latest release rather than pinning.**
+The `HelmRelease` leaves `chart.spec.version` unset, so Flux resolves the newest chart on `charts.gitlab.io` each reconcile (`chart.spec.interval`). Chosen over pinning an exact version or a `0.94.x` range because the owner wants charts to stay current without manual bumps. Trade-off accepted: a new chart can arrive without review and can restart the runner; the runner tolerates this via `terminationGracePeriodSeconds`. Pinning remains a one-line change if that flips later.
+
 **Tag jobs to the self-hosted runner.**
 The runner registers with a tag (e.g. `self-hosted`); `ImageUpdateAutomation`'s MR job and any future jobs carry that tag so they land on the in-cluster runner. Disable shared runners for the group/project so an untagged job cannot silently fall back to GitLab-hosted runners.
 
 **Runner token stored in the repo's SOPS workflow.**
-The `glrt-` token is a new SOPS-encrypted Secret (in the runner namespace), written with the same age key and `encrypted_regex` as everything else, then referenced from the HelmRelease values.
+The `glrt-` token is a new SOPS-encrypted Secret kept in `clusters/personal-cluster/secrets/gitlab-runner-token.yaml` (declaring namespace `gitlab-runner`), written with the same age key and `encrypted_regex` as everything else, then referenced from the HelmRelease values. Secrets live together in the `secrets/` directory rather than beside the chart.
 
 ## Risks / Trade-offs
 
@@ -76,15 +79,15 @@ The `glrt-` token is a new SOPS-encrypted Secret (in the runner namespace), writ
 - [`.github/` left half-live] → the Actions workflow does nothing on GitLab; `copilot-instructions.md` is Copilot-specific. Both are deleted as part of this change.
 - [Home Assistant image is `ghcr.io/...`] → upstream image, not our repo; no action, just don't mistake it for GitHub coupling.
 - [Runner token or executor over-privileged] → runner in its own namespace with a scoped service account; token kept only as an encrypted Secret; no cluster-admin binding for job pods.
+- [Chart upgrades arrive unannounced] → charts track the latest release by choice; a new chart can restart the runner pod, which is acceptable here (jobs are short and the runner drains on `terminationGracePeriodSeconds`). Pin a version if that changes.
 - [Runner outage blocks CI] → the runner is on owned infra with no fallback to shared runners by design; document how to pause/repair the HelmRelease rather than silently re-enabling shared runners.
-- [Chart upgrades drift] → pin the chart version in the HelmRelease so upgrades are explicit and reviewable.
 
 ## Migration Plan
 
 1. Create the GitLab project `goldencanopy/personal-cluster` (private, matching GitHub visibility).
 2. Create a group-level runner for `goldencanopy`; capture its `glrt-...` authentication token; give it a tag (e.g. `self-hosted`); disable shared runners for the group/project.
 3. Mint the Project Access Token; add the MR token (or a second) as a masked CI/CD variable; protect `main` and require merge requests.
-4. Deploy the runner to the cluster: add `infra/gitlab-runner/` with a `HelmRepository` (`https://charts.gitlab.io`), a pinned `HelmRelease` for `gitlab/gitlab-runner` in namespace `gitlab-runner` (Kubernetes executor), and the SOPS-encrypted token Secret it references. Reconcile and verify the runner shows **online** in GitLab.
+4. Deploy the runner to the cluster: add `infra/gitlab-runner/` with a `HelmRepository` (`https://charts.gitlab.io`) and a `HelmRelease` for `gitlab/gitlab-runner` that tracks the latest chart (Kubernetes executor, namespace `gitlab-runner`), plus the SOPS-encrypted token Secret in `secrets/` that it references. Reconcile and verify the runner shows **online** in GitLab.
 5. Push history: `git remote add gitlab https://gitlab.com/goldencanopy/personal-cluster.git` then `git push gitlab --all --tags`; set `origin` to GitLab.
 6. Add `.gitlab-ci.yml` with the merge-request job on push to `flux-image-updates`, tagged for the self-hosted runner; delete `.github/` entirely.
 7. Add `secrets/gitlab-token.yaml`, re-encrypt it with SOPS, point `secrets/kustomization.yaml` at it, and update `redeploy-flux.sh` to apply it. Leave `github-pat.yaml` in place but unreferenced. Update `gotk-sync.yaml` URL and `README.md`.

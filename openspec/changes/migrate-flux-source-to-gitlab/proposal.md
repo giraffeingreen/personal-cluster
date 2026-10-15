@@ -34,7 +34,8 @@ Out of scope: migrating the cluster, re-encrypting unrelated secrets, changing k
 - `clusters/personal-cluster/secrets/kustomization.yaml` — resource reference swapped to the new token file.
 - `clusters/personal-cluster/image-automation/imageupdateautomation.yaml` — push token capability, commit author.
 - `.github/workflows/flux-image-update-pr.yaml` and `.github/copilot-instructions.md` — deleted; replaced by `.gitlab-ci.yml`.
-- `clusters/personal-cluster/infra/gitlab-runner/` — new `HelmRepository`/`HelmRelease` for `gitlab/gitlab-runner`, runner config, and the SOPS-encrypted runner auth token.
+- `clusters/personal-cluster/infra/gitlab-runner/` — new `HelmRepository`/`HelmRelease` for `gitlab/gitlab-runner` (tracks latest) and runner config.
+- `clusters/personal-cluster/secrets/gitlab-runner-token.yaml` — new SOPS-encrypted runner authentication token (namespace `gitlab-runner`), plus its entry in `secrets/kustomization.yaml`.
 - `README.md`, `redeploy-flux.sh` — docs and redeploy flow.
 - Git remotes/history and GitLab project settings (CI/CD variables, protected `main`).
 - Unaffected: SOPS + AGE keys, Discord notification stack (in-cluster), apps, k0s, OpenEBS.

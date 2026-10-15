@@ -10,7 +10,7 @@
 ## 2. Self-hosted GitLab Runner
 
 - [ ] 2.1 Create a group-level runner for `goldencanopy`, capture its `glrt-...` authentication token, tag it `self-hosted`, and disable shared runners; verify the runner appears under the group's CI/CD runners (offline until deployed)
-- [ ] 2.2 Add `clusters/personal-cluster/infra/gitlab-runner/` with a `HelmRepository` for `https://charts.gitlab.io` and a pinned `HelmRelease` for `gitlab/gitlab-runner` (Kubernetes executor) in namespace `gitlab-runner`; verify `kustomize build` renders and the HelmRelease reaches `Ready`
+- [ ] 2.2 Add `clusters/personal-cluster/infra/gitlab-runner/` with a `HelmRepository` for `https://charts.gitlab.io` and a `HelmRelease` for `gitlab/gitlab-runner` that tracks the latest chart (Kubernetes executor, namespace `gitlab-runner`); verify `kustomize build` renders and the HelmRelease reaches `Ready`
 - [ ] 2.3 Store the runner authentication token as a SOPS-encrypted Secret and wire it into the HelmRelease values; verify the token appears only encrypted in the repo and the runner reports **online** in GitLab
 - [ ] 2.4 Verify a tagged job executes in-cluster by confirming a job pod appears in the `gitlab-runner` namespace during a pipeline run
 

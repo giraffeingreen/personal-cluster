@@ -8,15 +8,17 @@ spec:
   chart:
     spec:
       chart: gitlab-runner
-      version: "0.94.0"
+      # No version pinned: Flux tracks the latest chart published on
+      # charts.gitlab.io (re-checked every 'interval'). To freeze instead set a
+      # version (e.g. "0.94.0" or the range "0.94.x").
       interval: 1h
       sourceRef:
         kind: HelmRepository
         name: gitlab
   # The runner authenticates with a group-level runner authentication token
-  # held in the 'gitlab-runner-token' Secret (keys: runner-token,
-  # runner-registration-token). Setting runners.secret makes the chart use that
-  # Secret instead of creating its own.
+  # held in the 'gitlab-runner-token' Secret under clusters/personal-cluster/
+  # secrets/ (keys: runner-token, runner-registration-token). Setting
+  # runners.secret makes the chart use that Secret instead of creating its own.
   values:
     gitlabUrl: https://gitlab.com
     concurrent: 4
