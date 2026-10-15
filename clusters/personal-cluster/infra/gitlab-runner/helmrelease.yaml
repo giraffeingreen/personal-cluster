@@ -29,10 +29,11 @@ spec:
     serviceAccount:
       create: true
     runners:
+      name: self-hosted-cluster
       executor: kubernetes
-      # Tags, "run untagged jobs", and the runner name come from how the group
-      # runner is created in GitLab. With a glrt- authentication token the chart
-      # ignores its tag/untagged flags, so there is nothing to set here.
+      # Tags and "run untagged jobs" come from how the group runner is created
+      # in GitLab. With a glrt- authentication token the chart ignores its own
+      # tag/untagged flags, so there is nothing to set for those here.
       secret: gitlab-runner-token
       config: |
         [[runners]]
