@@ -1,0 +1,43 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gitlab-runner
+  namespace: gitlab-runner
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: gitlab-runner
+      # No version pinned: Flux tracks the latest chart published on
+      # charts.gitlab.io (re-checked every 'interval'). To freeze instead set a
+      # version (e.g. "0.94.0" or the range "0.94.x").
+      interval: 1h
+      sourceRef:
+        kind: HelmRepository
+        name: gitlab
+  # The runner authenticates with a group-level runner authentication token
+  # held in the 'gitlab-runner-token' Secret under clusters/personal-cluster/
+  # secrets/ (keys: runner-token, runner-registration-token). Setting
+  # runners.secret makes the chart use that Secret instead of creating its own.
+  values:
+    gitlabUrl: https://gitlab.com
+    concurrent: 4
+    checkInterval: 3
+    rbac:
+      create: true
+      clusterWideAccess: false
+    serviceAccount:
+      create: true
+    runners:
+      name: self-hosted-cluster
+      executor: kubernetes
+      # Tags and "run untagged jobs" come from how the group runner is created
+      # in GitLab. With a glrt- authentication token the chart ignores its own
+      # tag/untagged flags, so there is nothing to set for those here.
+      secret: gitlab-runner-token
+      config: |
+        [[runners]]
+          [runners.kubernetes]
+            namespace = "gitlab-runner"
+            image = "alpine"
+            privileged = false
