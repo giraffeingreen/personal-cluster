@@ -19,15 +19,15 @@ kubectl apply -f "$FLUX_SYSTEM_DIR/gotk-components.yaml"
 kubectl apply -f "$FLUX_SYSTEM_DIR/gotk-sync.yaml"
 
 # -------------------------------------------------------------------------
-# Step 2: Prime the GitHub Token via Local SOPS Decryption
+# Step 2: Prime the GitLab Token via Local SOPS Decryption
 # -------------------------------------------------------------------------
-echo "🔑 Step 2/4: Decrypting GitHub PAT using local age key..."
+echo "🔑 Step 2/4: Decrypting GitLab access token using local age key..."
 export SOPS_AGE_KEY_FILE="$SOPS_KEY"
 
-if [ -f "$SECRETS_DIR/github-pat.yaml" ]; then
-    sops -d "$SECRETS_DIR/github-pat.yaml" | kubectl apply -f -
+if [ -f "$SECRETS_DIR/gitlab-token.yaml" ]; then
+    sops -d "$SECRETS_DIR/gitlab-token.yaml" | kubectl apply -f -
 else
-    echo "❌ Error: github-pat.yaml not found at $SECRETS_DIR/github-pat.yaml"
+    echo "❌ Error: gitlab-token.yaml not found at $SECRETS_DIR/gitlab-token.yaml"
     exit 1
 fi
 

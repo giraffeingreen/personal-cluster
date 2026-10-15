@@ -27,8 +27,8 @@ See proposal.md - Why. Current state that shapes the approach:
 
 ## Decisions
 
-**Token type: GitLab Project Access Token (role Developer, scopes `read_repository` + `write_repository`).**
-Chosen over a Personal Access Token (tied to a human account, broader blast radius) and over a Deploy Token (weaker API rights and awkward for the push). One token can both pull for Flux and push `flux-image-updates`; `write_repository` + Developer on a non-protected branch is sufficient. The same Secret keeps its `username`/`password` keys, so the GitRepository needs no shape change. Username value is any non-empty string (GitLab does not verifiably check it for token auth; e.g. the token name or `oauth2`).
+**Token type: GitLab Personal Access Token (scopes `api` + `write_repository`).**
+Project Access Tokens are a Premium feature on gitlab.com, so on Free the token has to be a Personal Access Token. It is tied to the human account, which is the trade-off accepted here (a project-scoped token would be preferable but is unavailable). The same token both pulls for Flux and pushes `flux-image-updates`; `api` covers merge-request management for the CI job and `write_repository` covers git. The same Secret keeps its `username`/`password` keys, so the GitRepository needs no shape change. Username value is any non-empty string (GitLab does not verifiably check it for token auth; e.g. `oauth2`).
 
 **Keep the review-before-`main` flow, implemented in GitLab CI.**
 Staying with a branch + review request is a deliberate safety property (see the `image-update-automation` spec). Alternatives:
@@ -36,14 +36,14 @@ Staying with a branch + review request is a deliberate safety property (see the 
 - *GitLab push options* (`git push -o merge_request.create`) - Flux does not expose push options for `ImageUpdateAutomation`, so this is not available.
 - *CI job using `glab` (or the REST API) on push to `flux-image-updates`* - chosen; mirrors the current GitHub Actions job one-to-one.
 
-**CI authentication via a masked/protected CI/CD variable holding a Project Access Token.**
-`CI_JOB_TOKEN` cannot create merge requests, so the job needs its own token variable. Reuse the same project access token value as a separate masked variable, or mint a second one; the design assumes one variable, e.g. `GITLAB_MR_TOKEN`.
+**CI authentication via a masked CI/CD variable holding a Personal Access Token.**
+`CI_JOB_TOKEN` cannot create merge requests, so the job needs its own token variable. The design reuses the same Personal Access Token as a masked variable, e.g. `GITLAB_MR_TOKEN`. It is masked but **not** protected: the job runs on the unprotected `flux-image-updates` branch, and protected variables are only exposed to protected branches/tags.
 
 **Fresh push (not a mirror) from GitHub to GitLab.**
 Push the existing history once (`git remote add gitlab ... && git push gitlab --all --tags`), then make GitLab `origin`. A GitLab "repository mirroring" pull from GitHub is rejected: it adds a standing dependency on GitHub and a second source of truth. The local clone already holds full history, so no external tooling is required.
 
 **Leave `github-pat.yaml` untouched; add a new `gitlab-token.yaml`.**
-The existing file is kept as-is in the repository (a preserved GitHub rollback reference) rather than edited. A new `clusters/personal-cluster/secrets/gitlab-token.yaml` carries the GitLab Project Access Token and defines the same Secret name, `flux-system` (the GitRepository references the Secret name, not the file). `secrets/kustomization.yaml` is changed to reference `gitlab-token.yaml` instead of `github-pat.yaml`, so only one `flux-system` Secret is ever applied. Because two files in the repo would define the same Secret name, `github-pat.yaml` MUST stay out of the kustomization resources to avoid a duplicate-resource conflict.
+The existing file is kept as-is in the repository (a preserved GitHub rollback reference) rather than edited. A new `clusters/personal-cluster/secrets/gitlab-token.yaml` carries the GitLab Personal Access Token and defines the same Secret name, `flux-system` (the GitRepository references the Secret name, not the file). `secrets/kustomization.yaml` is changed to reference `gitlab-token.yaml` instead of `github-pat.yaml`, so only one `flux-system` Secret is ever applied. Because two files in the repo would define the same Secret name, `github-pat.yaml` MUST stay out of the kustomization resources to avoid a duplicate-resource conflict.
 
 **Delete `.github/` entirely.** The GitHub Actions workflow does nothing on GitLab, and `copilot-instructions.md` is GitHub-Copilot-specific. Both are removed; GitLab-native guidance (if any) lives in `README.md`.
 
@@ -72,10 +72,10 @@ The `glrt-` token is a new SOPS-encrypted Secret kept in `clusters/personal-clus
 
 ## Risks / Trade-offs
 
-- [Token leaked or over-scoped] → Project Access Token scoped to `write_repository` only; add a near-term expiry and rotate; keep it SOPS-encrypted at rest.
+- [Token leaked or over-scoped] → Personal Access Token limited to `api` + `write_repository`; set an expiry and rotate; keep it SOPS-encrypted at rest. Tied to the human account (Free has no project-scoped tokens) so revoking or losing the account breaks the source.
 - [`main` protection on GitLab blocks a needed push] → the bot only writes `flux-image-updates`; protect `main` and require MRs, which is the intended gate.
 - [Broken sync during cutover] → apply order: create GitLab token + Secret first, then update `gotk-sync.yaml`, then `flux reconcile`; rollback is reverting `gotk-sync.yaml` + the Secret to the GitHub values.
-- [CI job secret needs care] → store the MR token as a masked, protected variable so it never prints; the job only runs on the `flux-image-updates` branch.
+- [CI job secret needs care] → store the MR token as a masked variable (unprotected, since the update branch is unprotected) so it never prints; the job only runs on the `flux-image-updates` branch.
 - [`.github/` left half-live] → the Actions workflow does nothing on GitLab; `copilot-instructions.md` is Copilot-specific. Both are deleted as part of this change.
 - [Home Assistant image is `ghcr.io/...`] → upstream image, not our repo; no action, just don't mistake it for GitHub coupling.
 - [Runner token or executor over-privileged] → runner in its own namespace with a scoped service account; token kept only as an encrypted Secret; no cluster-admin binding for job pods.
@@ -86,7 +86,7 @@ The `glrt-` token is a new SOPS-encrypted Secret kept in `clusters/personal-clus
 
 1. Create the GitLab project `goldencanopy/personal-cluster` (private, matching GitHub visibility).
 2. Create a group-level runner for `goldencanopy`; capture its `glrt-...` authentication token; give it a tag (e.g. `self-hosted`); disable shared runners for the group/project.
-3. Mint the Project Access Token; add the MR token (or a second) as a masked CI/CD variable; protect `main` and require merge requests.
+3. Mint the Personal Access Token; add it as a masked CI/CD variable; protect `main` and require merge requests.
 4. Deploy the runner to the cluster: add `infra/gitlab-runner/` with a `HelmRepository` (`https://charts.gitlab.io`) and a `HelmRelease` for `gitlab/gitlab-runner` that tracks the latest chart (Kubernetes executor, namespace `gitlab-runner`), plus the SOPS-encrypted token Secret in `secrets/` that it references. Reconcile and verify the runner shows **online** in GitLab.
 5. Push history: `git remote add gitlab https://gitlab.com/goldencanopy/personal-cluster.git` then `git push gitlab --all --tags`; set `origin` to GitLab.
 6. Add `.gitlab-ci.yml` with the merge-request job on push to `flux-image-updates`, tagged for the self-hosted runner; delete `.github/` entirely.

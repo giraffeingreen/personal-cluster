@@ -1,0 +1,45 @@
+# Replaces the former .github/workflows/flux-image-update-pr.yaml.
+#
+# Flux image automation commits detected image updates to the
+# 'flux-image-updates' branch. When that branch is pushed, open (or update) a
+# merge request into 'main' so the change is reviewed before it reaches the
+# cluster's desired state.
+
+stages:
+  - automation
+
+create-image-update-mr:
+  stage: automation
+  image: alpine:3.20
+  tags:
+    - self-hosted
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "flux-image-updates"'
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - apk add --no-cache curl jq
+    - |
+      set -eu
+      api="$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests"
+      title="chore: Update container images"
+      description="Automated image updates detected by Flux image automation. Review the image tag changes before merging. Last updated $(date -u '+%Y-%m-%d %H:%M:%S UTC')."
+      existing="$(curl -sS --header "PRIVATE-TOKEN: $GITLAB_MR_TOKEN" \
+        "$api?source_branch=flux-image-updates&target_branch=main&state=opened" \
+        | jq -r '.[0].iid // empty')"
+      if [ -n "$existing" ]; then
+        echo "Updating merge request !$existing"
+        curl -sS --fail --request PUT --header "PRIVATE-TOKEN: $GITLAB_MR_TOKEN" \
+          --data-urlencode "title=$title" \
+          --data-urlencode "description=$description" \
+          "$api/$existing"
+      else
+        echo "Creating merge request"
+        curl -sS --fail --request POST --header "PRIVATE-TOKEN: $GITLAB_MR_TOKEN" \
+          --data-urlencode "source_branch=flux-image-updates" \
+          --data-urlencode "target_branch=main" \
+          --data-urlencode "title=$title" \
+          --data-urlencode "description=$description" \
+          --data-urlencode "remove_source_branch=false" \
+          "$api"
+      fi

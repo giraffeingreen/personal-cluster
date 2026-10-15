@@ -30,7 +30,7 @@ You can add more application and infrastructure manifests under your own directo
 - `kubectl` and `flux` CLIs installed
 - `sops` CLI installed (for secret encryption)
 - `age` CLI installed (for SOPS encryption keys)
-- GitHub access to this repository
+- GitLab access to this repository (gitlab.com, group `goldencanopy`)
 - Discord server with webhook access (for notifications)
 
 ## Bootstrap (one-time)
@@ -38,15 +38,21 @@ You can add more application and infrastructure manifests under your own directo
 If you need to (re)bootstrap Flux on a fresh cluster using this repository:
 
 ```bash
-flux bootstrap github \
-  --owner giraffeingreen \
+flux bootstrap gitlab \
+  --owner goldencanopy \
   --repository personal-cluster \
   --branch main \
   --path clusters/personal-cluster \
-  --personal
+  --token-auth
 ```
 
 This installs Flux controllers and points them at this repo/path. Adjust flags as needed.
+
+## CI runner
+
+Pipeline jobs run on an in-cluster GitLab Runner (Kubernetes executor), deployed as a Flux `HelmRelease` under `clusters/personal-cluster/infra/gitlab-runner/`. It is registered as a **group** runner for `goldencanopy`; jobs select it with the `self-hosted` tag. Instance (shared) runners should stay disabled for the group and project so untagged jobs cannot fall back to GitLab-hosted runners.
+
+The runner authenticates with a group runner authentication token stored (SOPS-encrypted) at `clusters/personal-cluster/secrets/gitlab-runner-token.yaml`.
 
 ## Day-2 operations
 
