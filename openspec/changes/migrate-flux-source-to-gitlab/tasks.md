@@ -3,8 +3,8 @@
 ## 1. GitLab project and credentials
 
 - [ ] 1.1 Create the private GitLab project `goldencanopy/personal-cluster` on gitlab.com and verify it loads at `https://gitlab.com/goldencanopy/personal-cluster`
-- [ ] 1.2 Create a Project Access Token (role Developer, scopes `read_repository` + `write_repository`) and verify `git ls-remote https://oauth2:<token>@gitlab.com/goldencanopy/personal-cluster.git` succeeds
-- [ ] 1.3 Add the merge-request token as a masked, protected CI/CD variable (e.g. `GITLAB_MR_TOKEN`) and verify it is visible in the project's CI/CD variables list and marked masked
+- [ ] 1.2 Create a Personal Access Token (scopes `api` + `write_repository`; project-scoped tokens need Premium) and verify `git ls-remote https://oauth2:<token>@gitlab.com/goldencanopy/personal-cluster.git` succeeds
+- [ ] 1.3 Add the merge-request token as a **masked** CI/CD variable (e.g. `GITLAB_MR_TOKEN`) — not protected, because the `flux-image-updates` branch is unprotected and protected variables would not reach its jobs; verify it appears masked in the project's CI/CD variables list
 - [ ] 1.4 Protect `main` and require merge requests on the GitLab project and verify the protected-branch setting is active
 
 ## 2. Self-hosted GitLab Runner
